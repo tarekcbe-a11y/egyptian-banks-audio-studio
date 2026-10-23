@@ -80,7 +80,7 @@ header {
   gap: 12px;
 }
 
-/* إطار الصورة يتناسب مع أبعادها ولا يقص أطرافها */
+/* إطار الصورة يتناسب مع أبعاد الصورة ولا يقص أطرافها */
 .stage-card {
   background: #000;
   border: 2px solid var(--gold-primary);
@@ -395,6 +395,17 @@ button:disabled {
       ></div>
     </div>
 
+    <!-- أزرار التشغيل والإيقاف قبل اختيار الصوت -->
+    <div class="btn-group">
+      <button class="btn-primary" id="playButton" type="button">
+        🔊 تشغيل الصوت المباشر
+      </button>
+
+      <button class="btn-secondary" id="stopButton" type="button">
+        ⏹️ إيقاف
+      </button>
+    </div>
+
     <div class="form-group">
       <label for="voiceSelect">🎙️ اختر الصوت المتاح على جهازك:</label>
       <select id="voiceSelect"></select>
@@ -411,6 +422,7 @@ button:disabled {
         <label for="rateInput">
           ⚡ السرعة: <span id="rateLabel">0.85x</span>
         </label>
+
         <input
           type="range"
           id="rateInput"
@@ -425,6 +437,7 @@ button:disabled {
         <label for="pitchInput">
           🎼 النبرة: <span id="pitchLabel">0.90</span>
         </label>
+
         <input
           type="range"
           id="pitchInput"
@@ -458,7 +471,10 @@ button:disabled {
         ✦ النص الإذاعي (موضوع كامل دون حد أقصى ثابت):
       </label>
 
-      <textarea id="scriptText" placeholder="الصق هنا النص الإذاعي الجاهز للتعليق الصوتي...">أهلاً بكم في تحليل لأعضاء الجروب. نستعرض اليوم أحدث مستجدات القطاع المصرفي، ومؤشرات أذون الخزانة المصرية، وعطاءات البنك المركزي المصري برؤية تحليلية متكاملة تهم كل عملاء البنوك.</textarea>
+      <textarea
+        id="scriptText"
+        placeholder="الصق هنا النص الإذاعي الجاهز للتعليق الصوتي..."
+      >أهلاً بكم في تحليل لأعضاء الجروب. نستعرض اليوم أحدث مستجدات القطاع المصرفي، ومؤشرات أذون الخزانة المصرية، وعطاءات البنك المركزي المصري برؤية تحليلية متكاملة تهم كل عملاء البنوك.</textarea>
 
       <div class="word-counter" id="wordCounter">
         عدد الكلمات: 0
@@ -473,16 +489,6 @@ button:disabled {
 
     <div class="status-line" id="statusLine" role="status" aria-live="polite">
       الاستوديو جاهز للتشغيل.
-    </div>
-
-    <div class="btn-group">
-      <button class="btn-primary" id="playButton" type="button">
-        🔊 تشغيل الصوت المباشر
-      </button>
-
-      <button class="btn-secondary" id="stopButton" type="button">
-        ⏹️ إيقاف
-      </button>
     </div>
 
   </div>
@@ -562,7 +568,6 @@ function uploadMultipleImages(event) {
 
     reader.onload = function(e) {
       const src = e.target.result;
-
       const thumb = document.createElement('img');
 
       thumb.src = src;
