@@ -1,371 +1,268 @@
+
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
 <title>استوديو جروب عملاء البنوك المصرية</title>
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
 
 <style>
-:root {
-  --bg-dark: #050811;
-  --panel-bg: #0d1322;
-  --gold-primary: #d4af37;
-  --gold-light: #fef08a;
-  --text-light: #f8fafc;
+:root{
+  --bg-dark:#050811;
+  --panel-bg:#0d1322;
+  --gold-primary:#d4af37;
+  --gold-light:#fef08a;
+  --text-light:#f8fafc;
+}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Cairo,sans-serif}
+body{
+  background:var(--bg-dark);
+  color:var(--text-light);
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:12px 10px;
+}
+header{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  width:100%;
+  max-width:480px;
+  padding:0 4px;
+  margin-bottom:12px;
+}
+.header-logo{
+  width:52px;height:52px;
+  object-fit:contain;
+  flex-shrink:0;
+  cursor:pointer;
+}
+.header-title{
+  display:flex;
+  flex-direction:column;
+  flex:1;
+  text-align:center;
+}
+.line-1{font-size:.95rem;color:var(--gold-light);font-weight:700}
+.line-2{font-size:1.15rem;color:var(--gold-primary);font-weight:800}
+.container{
+  width:100%;
+  max-width:480px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: 'Cairo', sans-serif;
+/* شاشة عرض ثابتة لتسجيل الفيديو */
+.stage-card{
+  background:#f5f1e7;
+  border:2px solid var(--gold-primary);
+  border-radius:18px;
+  overflow:hidden;
+  position:relative;
+  width:100%;
+  aspect-ratio:1312/1199;
+  max-height:52vh;
+  box-shadow:0 12px 30px #0005;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
-
-body {
-  background: var(--bg-dark);
-  color: var(--text-light);
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 12px 10px;
+.main-avatar{
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  display:none;
 }
-
-header {
-  text-align: center;
-  margin-bottom: 12px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
-  max-width: 480px;
-  padding: 0 4px;
+.stage-empty{
+  color:#7c7565;
+  text-align:center;
+  padding:20px;
+  font-size:.9rem;
 }
-
-.header-logo {
-  width: 52px;
-  height: 52px;
-  object-fit: contain;
-  flex-shrink: 0;
+.side-audio-waves{
+  position:absolute;
+  top:50%;
+  right:12px;
+  transform:translateY(-50%);
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+  z-index:5;
+  opacity:0;
+  pointer-events:none;
 }
-
-.header-title {
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  text-align: center;
+.side-audio-waves.active{opacity:1}
+.wave-bar{
+  width:20px;
+  height:4px;
+  background:var(--gold-primary);
+  border-radius:4px;
+  box-shadow:0 0 8px var(--gold-primary);
+  animation:pulse .6s infinite alternate;
 }
+.wave-bar:nth-child(2){animation-delay:.15s}
+.wave-bar:nth-child(3){animation-delay:.3s}
+.wave-bar:nth-child(4){animation-delay:.45s}
+@keyframes pulse{to{width:32px;background:#fff}}
 
-.header-title .line-1 {
-  font-size: 0.95rem;
-  color: var(--gold-light);
-  font-weight: 700;
-  text-align: center;
-  width: 100%;
+.control-card{
+  background:var(--panel-bg);
+  border:1px solid #1e293b;
+  border-radius:16px;
+  padding:14px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
 }
-
-.header-title .line-2 {
-  font-size: 1.15rem;
-  color: var(--gold-primary);
-  font-weight: 800;
-  text-align: center;
+.form-group{display:flex;flex-direction:column;gap:6px}
+label{font-size:.82rem;color:var(--gold-light);font-weight:700}
+select,input[type=range]{
+  width:100%;
+  background:#070b14;
+  border:1px solid #334155;
+  border-radius:10px;
+  padding:10px;
+  color:#fff;
+  font-size:.85rem;
 }
-
-.container {
-  width: 100%;
-  max-width: 480px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.upload-btn-custom{
+  background:#d4af371a;
+  border:1px dashed var(--gold-primary);
+  color:var(--gold-light);
+  padding:10px;
+  border-radius:10px;
+  text-align:center;
+  font-size:.82rem;
+  cursor:pointer;
+  font-weight:700;
 }
-
-/* إطار الصورة يتناسب مع أبعاد الصورة ولا يقص أطرافها */
-.stage-card {
-  background: #000;
-  border: 2px solid var(--gold-primary);
-  border-radius: 18px;
-  overflow: hidden;
-  position: relative;
-  width: 100%;
-  aspect-ratio: 1312 / 1199;
-  height: auto;
-  min-height: 0;
-  max-height: 62vh;
-  box-shadow: 0 12px 30px rgba(0,0,0,0.9);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.thumb-strip-container{
+  display:flex;
+  gap:8px;
+  overflow-x:auto;
+  padding:7px 2px;
+  scroll-behavior:smooth;
 }
-
-.main-avatar {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  object-position: center;
-  display: none;
-  transition: opacity 0.3s ease-in-out;
+.thumb-item{
+  width:58px;height:58px;
+  border-radius:8px;
+  object-fit:cover;
+  border:2px solid #334155;
+  cursor:pointer;
+  flex-shrink:0;
+  opacity:.65;
 }
-
-.side-audio-waves {
-  position: absolute;
-  top: 50%;
-  right: 12px;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  z-index: 15;
-  opacity: 0;
-  transition: opacity 0.3s;
-  pointer-events: none;
+.thumb-item.active{
+  border-color:var(--gold-primary);
+  opacity:1;
+  box-shadow:0 0 10px #d4af3780;
 }
-
-.side-audio-waves.active {
-  opacity: 1;
+.nav-row,.btn-group{
+  display:flex;
+  gap:8px;
+  align-items:center;
 }
-
-.wave-bar {
-  width: 20px;
-  height: 4px;
-  background: var(--gold-primary);
-  border-radius: 4px;
-  box-shadow: 0 0 8px var(--gold-primary);
+.nav-row button{flex:1}
+.image-position{
+  text-align:center;
+  color:var(--gold-light);
+  font-size:.78rem;
+  min-width:70px;
 }
-
-.side-audio-waves.active .wave-bar:nth-child(1) {
-  animation: sidePulse 0.6s infinite ease-in-out alternate;
+.btn-primary{
+  flex:2;
+  background:linear-gradient(135deg,#d4af37,#996515);
+  color:#000;
+  padding:12px;
+  border:0;
+  border-radius:10px;
+  font-weight:800;
+  font-size:.9rem;
+  cursor:pointer;
 }
-
-.side-audio-waves.active .wave-bar:nth-child(2) {
-  animation: sidePulse 0.8s infinite ease-in-out alternate 0.2s;
+.btn-secondary{
+  flex:1;
+  background:#1e293b;
+  color:#fff;
+  border:1px solid #334155;
+  padding:11px 8px;
+  border-radius:10px;
+  font-weight:700;
+  font-size:.82rem;
+  cursor:pointer;
 }
-
-.side-audio-waves.active .wave-bar:nth-child(3) {
-  animation: sidePulse 0.5s infinite ease-in-out alternate 0.4s;
+button:disabled{opacity:.45;cursor:not-allowed}
+.sliders-row{
+  display:flex;
+  gap:10px;
+  background:#0005;
+  padding:10px;
+  border-radius:10px;
+  border:1px solid #d4af3733;
 }
-
-.side-audio-waves.active .wave-bar:nth-child(4) {
-  animation: sidePulse 0.7s infinite ease-in-out alternate 0.1s;
+textarea{
+  width:100%;
+  background:#070b14;
+  border:1px solid #334155;
+  border-radius:10px;
+  padding:10px;
+  color:#fff;
+  font-size:.88rem;
+  height:180px;
+  min-height:120px;
+  max-height:42vh;
+  resize:vertical;
+  line-height:1.9;
+  overflow-y:auto;
 }
-
-@keyframes sidePulse {
-  0% {
-    width: 10px;
-    background: var(--gold-primary);
-  }
-  100% {
-    width: 32px;
-    background: #fff;
-  }
+textarea:focus{outline:none;border-color:var(--gold-primary)}
+.word-counter{font-size:.75rem;color:#94a3b8;text-align:left}
+.small-note{font-size:.73rem;color:#94a3b8;line-height:1.7}
+.status-line{
+  font-size:.78rem;
+  color:#cbd5e1;
+  line-height:1.7;
+  min-height:1.5em;
 }
-
-.control-card {
-  background: var(--panel-bg);
-  border: 1px solid #1e293b;
-  border-radius: 16px;
-  padding: 14px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+.hashtags-footer{
+  margin-top:8px;
+  font-size:.72rem;
+  color:#94a3b8;
+  text-align:center;
+  line-height:1.5;
 }
-
-.form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-
-label {
-  font-size: 0.82rem;
-  color: var(--gold-light);
-  font-weight: 700;
-}
-
-select,
-input[type="range"] {
-  width: 100%;
-  background: #070b14;
-  border: 1px solid #334155;
-  border-radius: 10px;
-  padding: 10px;
-  color: #fff;
-  font-size: 0.85rem;
-  outline: none;
-}
-
-.sliders-row {
-  display: flex;
-  gap: 10px;
-  background: rgba(0,0,0,0.3);
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid rgba(212,175,55,0.2);
-}
-
-.upload-btn-custom {
-  background: rgba(212,175,55,0.1);
-  border: 1px dashed var(--gold-primary);
-  color: var(--gold-light);
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
-  font-size: 0.82rem;
-  cursor: pointer;
-  font-weight: 700;
-}
-
-.thumb-strip-container {
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  padding: 4px 0;
-  scroll-behavior: smooth;
-}
-
-.thumb-strip-container::-webkit-scrollbar {
-  height: 4px;
-}
-
-.thumb-strip-container::-webkit-scrollbar-thumb {
-  background: var(--gold-primary);
-  border-radius: 4px;
-}
-
-.thumb-item {
-  width: 58px;
-  height: 58px;
-  border-radius: 8px;
-  object-fit: cover;
-  border: 2px solid #334155;
-  cursor: pointer;
-  flex-shrink: 0;
-  opacity: 0.6;
-  transition: all 0.2s;
-}
-
-.thumb-item.active {
-  border-color: var(--gold-primary);
-  opacity: 1;
-  box-shadow: 0 0 10px rgba(212,175,55,0.5);
-  transform: scale(1.05);
-}
-
-textarea {
-  width: 100%;
-  background: #070b14;
-  border: 1px solid #334155;
-  border-radius: 10px;
-  padding: 10px;
-  color: #fff;
-  font-size: 0.88rem;
-  outline: none;
-  height: 180px;
-  resize: vertical;
-  line-height: 1.8;
-}
-
-textarea:focus {
-  border-color: var(--gold-primary);
-}
-
-.word-counter {
-  font-size: 0.75rem;
-  color: #94a3b8;
-  text-align: left;
-}
-
-.small-note {
-  font-size: 0.73rem;
-  color: #94a3b8;
-  line-height: 1.7;
-}
-
-.status-line {
-  font-size: 0.78rem;
-  color: #cbd5e1;
-  line-height: 1.7;
-  min-height: 1.4em;
-}
-
-.btn-group {
-  display: flex;
-  gap: 8px;
-}
-
-.btn-primary {
-  flex: 2;
-  background: linear-gradient(135deg, #d4af37, #996515);
-  color: #000;
-  padding: 12px;
-  border: none;
-  border-radius: 10px;
-  font-weight: 800;
-  font-size: 0.95rem;
-  cursor: pointer;
-  box-shadow: 0 4px 15px rgba(212,175,55,0.3);
-}
-
-.btn-secondary {
-  flex: 1;
-  background: #1e293b;
-  color: #fff;
-  border: 1px solid #334155;
-  padding: 12px;
-  border-radius: 10px;
-  font-weight: 700;
-  font-size: 0.85rem;
-  cursor: pointer;
-}
-
-button:disabled {
-  opacity: 0.55;
-}
-
-.hashtags-footer {
-  margin-top: 8px;
-  font-size: 0.72rem;
-  color: #94a3b8;
-  text-align: center;
-  line-height: 1.5;
-}
-
-@media (max-width: 360px) {
-  .stage-card {
-    max-height: 55vh;
-  }
-
-  .header-title .line-2 {
-    font-size: 1rem;
-  }
-
-  .btn-primary,
-  .btn-secondary {
-    padding: 10px 7px;
-    font-size: 0.8rem;
-  }
+@media(max-width:360px){
+  .line-2{font-size:1rem}
+  .btn-primary,.btn-secondary{padding:10px 6px;font-size:.78rem}
 }
 </style>
 </head>
 
 <body>
-
 <header>
   <div style="width:52px;flex-shrink:0"></div>
-
   <div class="header-title">
     <span class="line-1">استوديو</span>
     <span class="line-2">جروب عملاء البنوك المصرية</span>
   </div>
-
-  <img src="logo.png" alt="اللوجو" class="header-logo">
+  <label for="logoUploader" style="cursor:pointer;flex-shrink:0">
+    <img src="logo.png" alt="اللوجو" class="header-logo" id="headerLogo"
+         onerror="this.style.visibility='hidden'">
+  </label>
+  <input type="file" id="logoUploader" accept="image/*" hidden>
 </header>
 
-<div class="container">
+<main class="container">
 
   <div class="stage-card" id="stageCard">
+    <div class="stage-empty" id="stageEmpty">
+      ارفع صور الخبر<br>وسيتم عرض الصورة المحددة هنا
+    </div>
     <img id="myAvatar" class="main-avatar" alt="صورة الخبر">
-
     <div class="side-audio-waves" id="sideWaves" aria-hidden="true">
       <div class="wave-bar"></div>
       <div class="wave-bar"></div>
@@ -374,460 +271,272 @@ button:disabled {
     </div>
   </div>
 
-  <div class="control-card">
+  <!-- التشغيل والإيقاف أسفل الصورة مباشرة -->
+  <div class="btn-group">
+    <button class="btn-primary" id="playButton" type="button">
+      🔊 تشغيل تعليق الصورة
+    </button>
+    <button class="btn-secondary" id="stopButton" type="button">
+      ⏹ إيقاف
+    </button>
+  </div>
 
+  <section class="control-card">
     <div class="form-group">
       <label class="upload-btn-custom" for="fileUploader">
-        📷 رفع صورة أو مجموعة صور للخبر من الموبايل
-        <input
-          type="file"
-          id="fileUploader"
-          accept="image/*"
-          multiple
-          style="display:none"
-        >
+        📷 إضافة صور الخبر (حتى 15 صورة)
+        <input type="file" id="fileUploader" accept="image/*" multiple hidden>
       </label>
-
-      <div
-        class="thumb-strip-container"
-        id="thumbStrip"
-        style="display:none"
-      ></div>
+      <div class="small-note" id="imageCount">لم تتم إضافة صور بعد.</div>
+      <div class="thumb-strip-container" id="thumbStrip" hidden></div>
     </div>
 
-    <!-- أزرار التشغيل والإيقاف قبل اختيار الصوت -->
-    <div class="btn-group">
-      <button class="btn-primary" id="playButton" type="button">
-        🔊 تشغيل الصوت المباشر
-      </button>
-
-      <button class="btn-secondary" id="stopButton" type="button">
-        ⏹️ إيقاف
-      </button>
+    <div class="nav-row">
+      <button class="btn-secondary" id="prevImage" type="button">❮ السابقة</button>
+      <span class="image-position" id="imagePosition">0 / 15</span>
+      <button class="btn-secondary" id="nextImage" type="button">التالية ❯</button>
     </div>
 
     <div class="form-group">
-      <label for="voiceSelect">🎙️ اختر طارق المتاح  على جهازك:</label>
-      <select id="voiceSelect"></select>
-
-      <div class="small-note">
-        الأصوات المتاحة تختلف حسب الجهاز والمتصفح. للحصول على نطق عربي،
-        اختر صوتًا لغته تبدأ بـ ar، ويفضل ar-EG إن كان متاحًا.
+      <label for="scriptText">✦ نص التعليق للصورة الحالية</label>
+      <textarea id="scriptText" placeholder="اكتب أو الصق تعليقك هنا بنفسك..."></textarea>
+      <div class="word-counter" id="wordCounter">عدد الكلمات: 0</div>
+      <div class="small-note">اكتب تعليق كل صورة بنفسك. سيتم حفظ النص الخاص بكل صورة عند التنقل بينها.</div>
+      <div class="btn-group">
+        <button class="btn-secondary" id="copyText" type="button">📋 نسخ النص</button>
+        <button class="btn-secondary" id="clearText" type="button">🗑️ مسح النص</button>
       </div>
+    </div>
+
+    <div class="form-group">
+      <label for="voiceSelect">🎙️ اختر الصوت المتاح على جهازك:</label>
+      <select id="voiceSelect"></select>
+      <div class="small-note">الأصوات تختلف حسب الجهاز والمتصفح. اختر صوتًا عربيًا، ويفضل ar-EG إن كان متاحًا.</div>
     </div>
 
     <div class="sliders-row">
-
       <div class="form-group" style="flex:1">
-        <label for="rateInput">
-          ⚡ السرعة: <span id="rateLabel">0.85x</span>
-        </label>
-
-        <input
-          type="range"
-          id="rateInput"
-          min="0.5"
-          max="1.5"
-          step="0.05"
-          value="0.85"
-        >
+        <label for="rateInput">⚡ السرعة: <span id="rateLabel">0.85x</span></label>
+        <input type="range" id="rateInput" min="0.5" max="1.5" step="0.05" value="0.85">
       </div>
-
       <div class="form-group" style="flex:1">
-        <label for="pitchInput">
-          🎼 النبرة: <span id="pitchLabel">0.90</span>
-        </label>
-
-        <input
-          type="range"
-          id="pitchInput"
-          min="0.5"
-          max="1.5"
-          step="0.05"
-          value="0.90"
-        >
+        <label for="pitchInput">🎼 النبرة: <span id="pitchLabel">0.90</span></label>
+        <input type="range" id="pitchInput" min="0.5" max="1.5" step="0.05" value="0.90">
       </div>
-
     </div>
 
     <div class="form-group">
-      <label for="pauseInput">
-        ⏸️ الوقفة بين الجمل:
-        <span id="pauseLabel">500 مللي ثانية</span>
-      </label>
-
-      <input
-        type="range"
-        id="pauseInput"
-        min="200"
-        max="1500"
-        step="100"
-        value="500"
-      >
+      <label for="pauseInput">⏸️ الوقفة بين الجمل: <span id="pauseLabel">500 مللي ثانية</span></label>
+      <input type="range" id="pauseInput" min="200" max="1500" step="100" value="500">
     </div>
 
-    <div class="form-group">
-      <label for="scriptText">
-        ✦ النص الإذاعي (موضوع كامل دون حد أقصى ثابت):
-      </label>
+    <div class="status-line" id="statusLine" role="status" aria-live="polite">الاستوديو جاهز للتشغيل.</div>
+  </section>
 
-      <textarea
-        id="scriptText"
-        placeholder="الصق هنا النص الإذاعي الجاهز للتعليق الصوتي..."
-      >أهلاً بكم في تحليل لأعضاء الجروب. نستعرض اليوم أحدث مستجدات القطاع المصرفي، ومؤشرات أذون الخزانة المصرية، وعطاءات البنك المركزي المصري برؤية تحليلية متكاملة تهم كل عملاء البنوك.</textarea>
-
-      <div class="word-counter" id="wordCounter">
-        عدد الكلمات: 0
-      </div>
-
-      <div class="small-note">
-        يمكنك وضع الموضوع كاملًا في هذا المربع. تغيير الصوت أو السرعة أو
-        النبرة أثناء القراءة يعيد المقطع الجاري من بدايته عند الحاجة،
-        ثم يكمل باقي الموضوع.
-      </div>
-    </div>
-
-    <div class="status-line" id="statusLine" role="status" aria-live="polite">
-      الاستوديو جاهز للتشغيل.
-    </div>
-
-  </div>
-
-  <div class="hashtags-footer">
+  <footer class="hashtags-footer">
     #جروب_عملاء_البنوك_المصرية<br>
     جروب عملاء البنوك المصرية<br>
-    #بنوك #بورصة #اقتصاد #مال_وأعمال #مال_وتجارة #بنك_مركزي
-  </div>
-
-</div>
+    #بنوك #بورصة #اقتصاد #مال_وأعمال
+  </footer>
+</main>
 
 <script>
 'use strict';
 
-const myAvatar = document.getElementById('myAvatar');
-const stageCard = document.getElementById('stageCard');
-const sideWaves = document.getElementById('sideWaves');
-const thumbStrip = document.getElementById('thumbStrip');
-const voiceSelect = document.getElementById('voiceSelect');
-const scriptText = document.getElementById('scriptText');
-const rateInput = document.getElementById('rateInput');
-const pitchInput = document.getElementById('pitchInput');
-const pauseInput = document.getElementById('pauseInput');
-const statusLine = document.getElementById('statusLine');
-const playButton = document.getElementById('playButton');
+const $ = id => document.getElementById(id);
+const MAX_IMAGES = 15;
 
-let systemVoices = [];
+let slides = [];
+let currentIndex = -1;
+let voices = [];
 let chunks = [];
 let chunkIndex = 0;
-let activeUtterance = null;
-let isReading = false;
 let runToken = 0;
 let pauseTimer = null;
-let currentTextSnapshot = '';
-let lastSettings = '';
+let isReading = false;
+let logoObjectURL = null;
 
-function setStatus(message) {
-  statusLine.textContent = message;
+function status(message) {
+  $('statusLine').textContent = message;
 }
 
-function countWords(text) {
-  const value = text.trim();
-  return value ? value.split(/\s+/u).length : 0;
+function words(text) {
+  return text.trim() ? text.trim().split(/\s+/u).length : 0;
 }
 
-function updateWordCount() {
-  const words = countWords(scriptText.value);
-
-  document.getElementById('wordCounter').textContent =
-    `عدد الكلمات: ${words.toLocaleString('ar-EG')}`;
+function updateCounter() {
+  $('wordCounter').textContent =
+    `عدد الكلمات: ${words($('scriptText').value).toLocaleString('ar-EG')}`;
 }
 
 function updateLabels() {
-  document.getElementById('rateLabel').textContent =
-    `${Number(rateInput.value).toFixed(2)}x`;
-
-  document.getElementById('pitchLabel').textContent =
-    Number(pitchInput.value).toFixed(2);
-
-  document.getElementById('pauseLabel').textContent =
-    `${pauseInput.value} مللي ثانية`;
+  $('rateLabel').textContent = (+$('rateInput').value).toFixed(2) + 'x';
+  $('pitchLabel').textContent = (+$('pitchInput').value).toFixed(2);
+  $('pauseLabel').textContent = $('pauseInput').value + ' مللي ثانية';
 }
 
-/* رفع مجموعة صور وإظهار الصور المصغرة */
-function uploadMultipleImages(event) {
+function saveCurrentText() {
+  if (currentIndex >= 0 && slides[currentIndex]) {
+    slides[currentIndex].text = $('scriptText').value;
+  }
+}
+
+function stopSpeech(message = 'تم إيقاف القراءة.') {
+  runToken++;
+  isReading = false;
+  clearTimeout(pauseTimer);
+  pauseTimer = null;
+
+  if ('speechSynthesis' in window) speechSynthesis.cancel();
+
+  $('sideWaves').classList.remove('active');
+  if (message) status(message);
+}
+
+function renderThumbs() {
+  const strip = $('thumbStrip');
+  strip.innerHTML = '';
+  strip.hidden = !slides.length;
+
+  slides.forEach((slide, index) => {
+    const img = document.createElement('img');
+    img.className = 'thumb-item' + (index === currentIndex ? ' active' : '');
+    img.src = slide.url;
+    img.alt = 'الصورة ' + (index + 1);
+    img.addEventListener('click', () => selectSlide(index));
+    strip.appendChild(img);
+  });
+
+  const active = strip.children[currentIndex];
+  if (active) {
+    active.scrollIntoView({behavior:'smooth',block:'nearest',inline:'nearest'});
+  }
+
+  $('imageCount').textContent = `تمت إضافة ${slides.length} من ${MAX_IMAGES} صورة.`;
+  $('imagePosition').textContent = slides.length
+    ? `${currentIndex + 1} / ${slides.length}`
+    : `0 / ${MAX_IMAGES}`;
+
+  $('prevImage').disabled = currentIndex <= 0;
+  $('nextImage').disabled = currentIndex < 0 || currentIndex >= slides.length - 1;
+}
+
+function selectSlide(index) {
+  if (index < 0 || index >= slides.length) return;
+
+  stopSpeech('تم إيقاف قراءة الصورة السابقة.');
+  saveCurrentText();
+
+  currentIndex = index;
+  const slide = slides[index];
+
+  $('myAvatar').src = slide.url;
+  $('myAvatar').style.display = 'block';
+  $('stageEmpty').hidden = true;
+
+  // لا نغيّر نسبة إطار العرض؛ تظل ثابتة طوال التسجيل
+  $('stageCard').style.aspectRatio = '1312 / 1199';
+
+  $('scriptText').value = slide.text || '';
+  updateCounter();
+  renderThumbs();
+
+  status(`الصورة ${index + 1} من ${slides.length}. يمكنك كتابة التعليق.`);
+}
+
+async function addImages(event) {
   const files = Array.from(event.target.files || [])
     .filter(file => file.type.startsWith('image/'));
 
   if (!files.length) return;
 
-  thumbStrip.innerHTML = '';
-  thumbStrip.style.display = 'flex';
-
-  files.forEach((file, index) => {
-    const reader = new FileReader();
-
-    reader.onload = function(e) {
-      const src = e.target.result;
-      const thumb = document.createElement('img');
-
-      thumb.src = src;
-      thumb.alt = `الصورة ${index + 1}`;
-      thumb.className = `thumb-item ${index === 0 ? 'active' : ''}`;
-
-      thumb.addEventListener('click', () => {
-        document.querySelectorAll('.thumb-item').forEach(item => {
-          item.classList.remove('active');
-        });
-
-        thumb.classList.add('active');
-        switchMainImage(src);
-      });
-
-      thumbStrip.appendChild(thumb);
-
-      if (index === 0) {
-        switchMainImage(src);
-      }
-    };
-
-    reader.readAsDataURL(file);
-  });
-}
-
-/* عرض الصورة كاملة وضبط الإطار حسب أبعادها */
-function switchMainImage(src) {
-  myAvatar.style.opacity = '0.25';
-
-  myAvatar.onload = () => {
-    myAvatar.style.display = 'block';
-    myAvatar.style.opacity = '1';
-
-    if (myAvatar.naturalWidth && myAvatar.naturalHeight) {
-      stageCard.style.aspectRatio =
-        `${myAvatar.naturalWidth} / ${myAvatar.naturalHeight}`;
-    }
-  };
-
-  myAvatar.onerror = () => {
-    myAvatar.removeAttribute('src');
-    myAvatar.style.display = 'none';
-    stageCard.style.aspectRatio = '1312 / 1199';
-
-    setStatus('تعذر عرض الصورة. جرّب اختيار صورة أخرى.');
-  };
-
-  myAvatar.src = src;
-}
-
-/* تحميل أصوات الجهاز وترتيب الأصوات العربية أولًا */
-function loadSystemVoices() {
-  if (!('speechSynthesis' in window)) {
-    voiceSelect.innerHTML =
-      '<option value="">المتصفح لا يدعم الصوت</option>';
-
-    playButton.disabled = true;
-    setStatus('المتصفح لا يدعم القراءة الصوتية.');
+  const remaining = MAX_IMAGES - slides.length;
+  if (remaining <= 0) {
+    status('وصلت إلى الحد الأقصى: 15 صورة.');
+    event.target.value = '';
     return;
   }
 
-  const previous = voiceSelect.value;
-
-  systemVoices = window.speechSynthesis.getVoices() || [];
-  voiceSelect.innerHTML = '';
-
-  if (!systemVoices.length) {
-    const option = document.createElement('option');
-
-    option.value = '';
-    option.textContent = 'جارٍ تحميل أصوات الجهاز...';
-
-    voiceSelect.appendChild(option);
-    return;
+  const accepted = files.slice(0, remaining);
+  if (files.length > remaining) {
+    status(`تم قبول ${remaining} صور فقط؛ الحد الأقصى 15 صورة.`);
   }
 
-  const sortedVoices = [...systemVoices].sort((a, b) => {
-    const aLang = (a.lang || '').toLowerCase();
-    const bLang = (b.lang || '').toLowerCase();
+  for (const file of accepted) {
+    const url = URL.createObjectURL(file);
+    const dimensions = await new Promise(resolve => {
+      const image = new Image();
+      image.onload = () => resolve([image.naturalWidth, image.naturalHeight]);
+      image.onerror = () => resolve([0, 0]);
+      image.src = url;
+    });
 
-    const rank = lang => {
-      if (lang === 'ar-eg') return 0;
-      if (lang.startsWith('ar')) return 1;
-      return 2;
-    };
-
-    return rank(aLang) - rank(bLang) ||
-      a.name.localeCompare(b.name);
-  });
-
-  sortedVoices.forEach(voice => {
-    const option = document.createElement('option');
-
-    option.value = voice.name;
-
-    const lang = (voice.lang || '').toLowerCase();
-
-    let marker = '🎙️ ';
-
-    if (lang === 'ar-eg') {
-      marker = '🇪🇬 ';
-    } else if (lang.startsWith('ar')) {
-      marker = '🟢 ';
-    }
-
-    option.textContent =
-      `${marker}${voice.name} (${voice.lang || 'لغة غير محددة'})`;
-
-    voiceSelect.appendChild(option);
-  });
-
-  if (systemVoices.some(voice => voice.name === previous)) {
-    voiceSelect.value = previous;
-  } else {
-    const egyptianVoice = sortedVoices.find(voice =>
-      (voice.lang || '').toLowerCase() === 'ar-eg'
-    );
-
-    const arabicVoice = sortedVoices.find(voice =>
-      (voice.lang || '').toLowerCase().startsWith('ar')
-    );
-
-    const preferred =
-      egyptianVoice || arabicVoice || sortedVoices[0];
-
-    if (preferred) {
-      voiceSelect.value = preferred.name;
-    }
+    slides.push({
+      url,
+      name: file.name,
+      width: dimensions[0],
+      height: dimensions[1],
+      text: ''
+    });
   }
+
+  if (currentIndex === -1 && slides.length) selectSlide(0);
+  else renderThumbs();
+
+  event.target.value = '';
 }
 
-function getChosenVoice() {
-  return systemVoices.find(
-    voice => voice.name === voiceSelect.value
-  ) || null;
-}
-
-function settingsSignature() {
-  const voice = getChosenVoice();
-
-  return JSON.stringify({
-    voice: voice ? voice.name : '',
-    rate: rateInput.value,
-    pitch: pitchInput.value
-  });
-}
-
-/* تقسيم النص إلى جمل ومقاطع مناسبة لمحرك الصوت */
 function splitText(text) {
-  const normalized = text.replace(/\r\n?/g, '\n').trim();
-
-  if (!normalized) return [];
-
-  const parts = normalized.match(
-    /[^.!؟?؛。\n]+[.!؟?؛。]*|[ \t]*\n+/gu
-  ) || [normalized];
-
-  const result = [];
+  const parts = text.trim().match(/[^.!؟?؛。\n]+[.!؟?؛。]*|[ \t]*\n+/gu) || [text];
+  const output = [];
   let buffer = '';
 
   for (const part of parts) {
     if (/^\s*\n+\s*$/u.test(part)) {
-      if (buffer.trim()) {
-        result.push(buffer.trim());
-      }
-
+      if (buffer.trim()) output.push(buffer.trim());
       buffer = '';
-      result.push('__PARAGRAPH_PAUSE__');
+      output.push('__PAUSE__');
       continue;
     }
 
     const sentence = part.trim();
-
     if (!sentence) continue;
 
-    if (!buffer) {
-      buffer = sentence;
-    } else if (
-      countWords(buffer) < 22 &&
-      countWords(buffer) + countWords(sentence) <= 32
-    ) {
-      buffer += ' ' + sentence;
-    } else {
-      result.push(buffer);
+    if (!buffer) buffer = sentence;
+    else if (words(buffer) + words(sentence) <= 28) buffer += ' ' + sentence;
+    else {
+      output.push(buffer);
       buffer = sentence;
     }
   }
 
-  if (buffer.trim()) {
-    result.push(buffer.trim());
-  }
-
-  return result.filter((item, index, array) =>
-    item !== '__PARAGRAPH_PAUSE__' ||
-    array[index - 1] !== '__PARAGRAPH_PAUSE__'
-  );
+  if (buffer.trim()) output.push(buffer.trim());
+  return output;
 }
 
-function clearPauseTimer() {
-  if (pauseTimer !== null) {
-    clearTimeout(pauseTimer);
-    pauseTimer = null;
-  }
-}
-
-function stopInternal(showMessage = true) {
-  runToken++;
-
-  clearPauseTimer();
-
-  isReading = false;
-  activeUtterance = null;
-
-  if ('speechSynthesis' in window) {
-    window.speechSynthesis.cancel();
-  }
-
-  sideWaves.classList.remove('active');
-
-  if (showMessage) {
-    setStatus('تم إيقاف القراءة.');
-  }
-}
-
-function stopSpeech() {
-  stopInternal(true);
-}
-
-/* تشغيل المقطع الحالي ثم استكمال بقية النص */
 function speakNext(token) {
   if (token !== runToken || !isReading) return;
 
   if (chunkIndex >= chunks.length) {
     isReading = false;
-    activeUtterance = null;
-
-    sideWaves.classList.remove('active');
-
-    setStatus('انتهت قراءة الموضوع بالكامل.');
+    $('sideWaves').classList.remove('active');
+    status('انتهت قراءة تعليق الصورة.');
     return;
   }
 
   const part = chunks[chunkIndex];
 
-  if (part === '__PARAGRAPH_PAUSE__') {
+  if (part === '__PAUSE__') {
     chunkIndex++;
-
-    clearPauseTimer();
-
-    pauseTimer = setTimeout(() => {
-      pauseTimer = null;
-      speakNext(token);
-    }, Math.max(700, Number(pauseInput.value)));
-
+    pauseTimer = setTimeout(
+      () => speakNext(token),
+      Math.max(700, +$('pauseInput').value)
+    );
     return;
   }
 
   const utterance = new SpeechSynthesisUtterance(part);
-  const voice = getChosenVoice();
+  const voice = voices.find(item => item.name === $('voiceSelect').value);
 
   if (voice) {
     utterance.voice = voice;
@@ -836,183 +545,170 @@ function speakNext(token) {
     utterance.lang = 'ar-EG';
   }
 
-  utterance.rate = Number(rateInput.value);
-  utterance.pitch = Number(pitchInput.value);
-
-  activeUtterance = utterance;
+  utterance.rate = +$('rateInput').value;
+  utterance.pitch = +$('pitchInput').value;
 
   utterance.onstart = () => {
-    if (token === runToken) {
-      sideWaves.classList.add('active');
-    }
+    if (token === runToken) $('sideWaves').classList.add('active');
   };
 
   utterance.onend = () => {
     if (token !== runToken) return;
-
-    activeUtterance = null;
-    sideWaves.classList.remove('active');
-
-    const completedPart = chunks[chunkIndex] || '';
-
+    $('sideWaves').classList.remove('active');
     chunkIndex++;
-
-    if (chunkIndex >= chunks.length) {
-      speakNext(token);
-      return;
-    }
-
-    const longPause = /[؟?!]/u.test(completedPart);
-
-    const pause = longPause
-      ? Math.max(650, Number(pauseInput.value))
-      : Number(pauseInput.value);
-
-    clearPauseTimer();
-
-    pauseTimer = setTimeout(() => {
-      pauseTimer = null;
-      speakNext(token);
-    }, pause);
+    pauseTimer = setTimeout(() => speakNext(token), +$('pauseInput').value);
   };
 
   utterance.onerror = event => {
     if (token !== runToken) return;
-
-    activeUtterance = null;
-    sideWaves.classList.remove('active');
-
-    if (
-      event.error === 'canceled' ||
-      event.error === 'interrupted'
-    ) {
-      return;
-    }
-
     isReading = false;
-
-    setStatus(
-      'تعذر تشغيل هذا المقطع. جرّب صوتًا آخر أو اضغط تشغيل من جديد.'
-    );
+    $('sideWaves').classList.remove('active');
+    status('تعذر تشغيل الصوت: ' + event.error);
   };
 
-  window.speechSynthesis.speak(utterance);
+  speechSynthesis.speak(utterance);
 }
 
-/* بدء قراءة الموضوع بالكامل */
-function playSpeech() {
+function playCurrent() {
   if (!('speechSynthesis' in window)) {
-    setStatus('المتصفح لا يدعم القراءة الصوتية.');
+    status('هذا المتصفح لا يدعم القراءة الصوتية.');
     return;
   }
 
-  const text = scriptText.value.trim();
+  if (currentIndex < 0) {
+    status('أضف صورة أولًا.');
+    return;
+  }
 
+  const text = $('scriptText').value.trim();
   if (!text) {
-    setStatus('اكتب النص أولًا ثم اضغط تشغيل.');
+    status('لا يوجد تعليق لهذه الصورة. اكتب التعليق أولًا.');
     return;
   }
 
-  stopInternal(false);
-
-  currentTextSnapshot = text;
+  saveCurrentText();
+  stopSpeech('');
   chunks = splitText(text);
   chunkIndex = 0;
   isReading = true;
-  lastSettings = settingsSignature();
 
-  setStatus(
-    `جاري قراءة الموضوع — ${countWords(text).toLocaleString('ar-EG')} كلمة`
-  );
-
+  status(`جاري قراءة تعليق الصورة ${currentIndex + 1} من ${slides.length}...`);
   speakNext(runToken);
 }
 
-/*
-  تغيير الصوت أو السرعة أو النبرة أثناء القراءة:
-  يعيد المقطع الحالي من بدايته ثم يكمل بقية الموضوع.
-  موضع الكلمة الدقيق غير مضمون في جميع المتصفحات.
-*/
-function applyLiveSettings() {
-  updateLabels();
-
-  if (!isReading) return;
-
-  const signature = settingsSignature();
-
-  if (signature === lastSettings) return;
-
-  lastSettings = signature;
-
-  const current = chunks[chunkIndex];
-
-  if (!current || current === '__PARAGRAPH_PAUSE__') {
+function loadVoices() {
+  if (!('speechSynthesis' in window)) {
+    $('voiceSelect').innerHTML = '<option>الصوت غير مدعوم</option>';
     return;
   }
 
-  runToken++;
+  voices = speechSynthesis.getVoices();
+  const select = $('voiceSelect');
+  const previous = select.value;
+  select.innerHTML = '';
 
-  const token = runToken;
+  const sorted = [...voices].sort((a, b) => {
+    const rank = voice =>
+      voice.lang.toLowerCase() === 'ar-eg' ? 0 :
+      voice.lang.toLowerCase().startsWith('ar') ? 1 : 2;
 
-  clearPauseTimer();
+    return rank(a) - rank(b) || a.name.localeCompare(b.name);
+  });
 
-  window.speechSynthesis.cancel();
+  sorted.forEach(voice => {
+    const option = document.createElement('option');
+    option.value = voice.name;
+    const lang = voice.lang.toLowerCase();
+    const marker = lang === 'ar-eg' ? '🇪🇬 ' :
+      lang.startsWith('ar') ? '🟢 ' : '🎙️ ';
+    option.textContent = `${marker}${voice.name} (${voice.lang})`;
+    select.appendChild(option);
+  });
 
-  activeUtterance = null;
-  sideWaves.classList.remove('active');
+  if (sorted.some(voice => voice.name === previous)) {
+    select.value = previous;
+  } else {
+    const preferred =
+      sorted.find(voice => voice.lang.toLowerCase() === 'ar-eg') ||
+      sorted.find(voice => voice.lang.toLowerCase().startsWith('ar')) ||
+      sorted[0];
 
-  setStatus(
-    'تم تحديث الإعدادات. استكمال القراءة من المقطع الحالي.'
-  );
-
-  pauseTimer = setTimeout(() => {
-    pauseTimer = null;
-
-    if (!isReading || token !== runToken) return;
-
-    speakNext(token);
-  }, 180);
+    if (preferred) select.value = preferred.name;
+  }
 }
 
-/* تحديث عداد الكلمات عند تعديل النص */
-scriptText.addEventListener('input', () => {
-  updateWordCount();
+/* تغيير اللوجو من خلال الضغط على صورته بجانب الاسم */
+$('logoUploader').addEventListener('change', event => {
+  const file = event.target.files && event.target.files[0];
 
-  if (
-    isReading &&
-    scriptText.value.trim() !== currentTextSnapshot
-  ) {
-    setStatus(
-      'تم تعديل النص. أوقف القراءة ثم اضغط تشغيل لتطبيق النص الجديد.'
-    );
+  if (!file || !file.type.startsWith('image/')) {
+    status('اختر ملف صورة صالحًا للوجو.');
+    return;
+  }
+
+  if (logoObjectURL) URL.revokeObjectURL(logoObjectURL);
+  logoObjectURL = URL.createObjectURL(file);
+
+  $('headerLogo').src = logoObjectURL;
+  $('headerLogo').style.visibility = 'visible';
+
+  status('تم تغيير صورة اللوجو.');
+  event.target.value = '';
+});
+
+$('fileUploader').addEventListener('change', addImages);
+$('prevImage').addEventListener('click', () => selectSlide(currentIndex - 1));
+$('nextImage').addEventListener('click', () => selectSlide(currentIndex + 1));
+
+$('scriptText').addEventListener('input', () => {
+  updateCounter();
+  saveCurrentText();
+});
+
+$('playButton').addEventListener('click', playCurrent);
+$('stopButton').addEventListener('click', () => stopSpeech());
+
+$('copyText').addEventListener('click', async () => {
+  const text = $('scriptText').value;
+
+  if (!text.trim()) {
+    status('لا يوجد نص لنسخه.');
+    return;
+  }
+
+  try {
+    await navigator.clipboard.writeText(text);
+    status('تم نسخ النص.');
+  } catch (error) {
+    $('scriptText').focus();
+    $('scriptText').select();
+    const copied = document.execCommand('copy');
+
+    status(copied
+      ? 'تم نسخ النص.'
+      : 'استخدم الضغط المطول داخل مربع النص ثم نسخ.');
   }
 });
 
-/* ربط الأزرار وأدوات التحكم */
-document.getElementById('fileUploader')
-  .addEventListener('change', uploadMultipleImages);
+$('clearText').addEventListener('click', () => {
+  $('scriptText').value = '';
+  saveCurrentText();
+  updateCounter();
+  status('تم مسح تعليق الصورة الحالية.');
+});
 
-document.getElementById('playButton')
-  .addEventListener('click', playSpeech);
+['rateInput','pitchInput','pauseInput'].forEach(id => {
+  $(id).addEventListener('input', updateLabels);
+});
 
-document.getElementById('stopButton')
-  .addEventListener('click', stopSpeech);
-
-voiceSelect.addEventListener('change', applyLiveSettings);
-rateInput.addEventListener('input', applyLiveSettings);
-pitchInput.addEventListener('input', applyLiveSettings);
-pauseInput.addEventListener('input', updateLabels);
-
-/* تحميل الأصوات المتاحة من الجهاز */
 if ('speechSynthesis' in window) {
-  loadSystemVoices();
-
-  window.speechSynthesis.onvoiceschanged = loadSystemVoices;
+  loadVoices();
+  speechSynthesis.onvoiceschanged = loadVoices;
 }
 
-/* تهيئة الواجهة */
-updateWordCount();
+updateCounter();
 updateLabels();
+renderThumbs();
 </script>
 
 </body>
